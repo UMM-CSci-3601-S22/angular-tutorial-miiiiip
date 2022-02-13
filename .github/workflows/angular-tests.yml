@@ -1,0 +1,25 @@
+name: Angular Tests
+
+on: [push]
+
+jobs:
+  ng-lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Install dependencies (npm ci)
+      run: npm ci
+    - name: Lint (npm run lint)
+      run: npm run lint
